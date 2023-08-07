@@ -7,7 +7,7 @@ const productManager = new ProductManager ();
 app.use ( express.urlencoded ({ extended:true }));
 const products = await productManager.downLoadDataBase ();
 app.get ( "/products/:pid", async ( req, res ) => {
-    const product =  await products.find ( object => object.id === parseInt ( req.params.pid ));
+    const product = products.find ( object => object.id === parseInt ( req.params.pid ));
     product ? res.send ( product ) : res.send ( "Product not found" );
 });
 app.get ( "/products", async ( req, res ) => {
@@ -15,7 +15,7 @@ app.get ( "/products", async ( req, res ) => {
     if ( !limit ) {
     res.send ( products );
     } else {
-    const productSearch = await products.slice ( 0, parseInt ( limit ) );
+    const productSearch = products.slice ( 0, parseInt ( limit ) );
     res.send ( productSearch );
     }
 });
