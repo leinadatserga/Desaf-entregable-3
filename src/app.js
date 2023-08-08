@@ -5,22 +5,19 @@ const app = express ();
 const PORT = 8080;
 const productManager = new ProductManager ();
 app.use ( express.urlencoded ({ extended:true }));
-const products = await productManager.downLoadDataBase ();
 app.get ( "/products/:pid", async ( req, res ) => {
-    const product = products.find ( object => object.id === parseInt ( req.params.pid ));
-    product ? res.send ( product ) : res.send ( "Product not found" );
+    const product = productManager.getProductById ( parseInt ( req.params.pid ));
+    res.json ( product );
 });
 app.get ( "/products", async ( req, res ) => {
     const {limit} = req.query;
+    const products = productManager.downLoadDataBase ();
     if ( !limit ) {
-    res.send ( products );
+    res.json ( products );
     } else {
     const productSearch = products.slice ( 0, parseInt ( limit ) );
-    res.send ( productSearch );
+    res.json ( productSearch );
     }
-});
-app.get ( "/products", async ( req, res ) => {
-    res.send ( products );
 });
 app.get ( "*", async ( req, res ) => {
     res.send ( "Error 404 - Sorry, cant find that" );
